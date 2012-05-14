@@ -10,11 +10,6 @@ import me.kevin.protectmycobble.Permission;
 public class PMC_PEX implements Permission.PermissionHandler{
 	PermissionsEx pex;
 	public boolean pexfound = false;
-	public PMC_PEX(){
-		if(findPex()){
-			pex = (PermissionsEx) Bukkit.getPluginManager().getPlugin("PermissionsEX");
-		}
-	}
 	@Override
 	public boolean hasPermission(Permission.Type permission, Player player) {
 		if(pexfound){
@@ -31,6 +26,13 @@ public class PMC_PEX implements Permission.PermissionHandler{
 		}catch (ClassNotFoundException e){
 			Bukkit.getLogger().severe("Did not find PEX, defaulting to OP!");
 			return false;
+		}
+	}
+	@Override
+	public void init() {
+		if(findPex()){
+			pex = (PermissionsEx) Bukkit.getPluginManager().getPlugin("PermissionsEX");
+			Bukkit.getLogger().info("ProtectMyCobble's PEX binder started!");
 		}
 	}
 

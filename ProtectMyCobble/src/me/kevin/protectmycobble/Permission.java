@@ -19,5 +19,6 @@ public class Permission{
 	}
 	public interface PermissionHandler{
 		public boolean hasPermission(Type permission, Player player);
+		public void init();
 	}
 }
