@@ -73,6 +73,10 @@ public class ProtectMyCobble extends JavaPlugin{
 		addPermissionHandler(new PMCPermissionsBukkit(), "Vanilla");
 		addPermissionHandler(new PMC_OP(), "OP");
 		
+		if(permissionHandlers.containsKey(permissionType)){
+			getPermissionHandler(permissionType).init();
+		}
+		
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(blocklistener, this);
 	}
