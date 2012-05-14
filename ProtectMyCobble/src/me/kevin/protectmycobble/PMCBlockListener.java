@@ -20,7 +20,7 @@ public class PMCBlockListener implements Listener{
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){
-		if(!event.isCancelled()){
+		if(!event.isCancelled() && !main.notProtected.contains(event.getBlock().getTypeId())){
 			if(!main.getPermissionHandler(main.permissionType).hasPermission(Permission.Type.Break, event.getPlayer())){
 				if(main.showOwner){
 					String owner = main.getSQL().getOwner(event.getBlock().getLocation());
