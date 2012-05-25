@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import me.kevin.protectmycobble.Permission.PermissionHandler;
+import me.kevin.protectmycobble.API.Permission;
+import me.kevin.protectmycobble.API.SQLHandler;
+import me.kevin.protectmycobble.API.Permission.PermissionHandler;
 import me.kevin.protectmycobble.permissionhandlers.PMCPermissionsBukkit;
 import me.kevin.protectmycobble.permissionhandlers.PMC_OP;
 import me.kevin.protectmycobble.permissionhandlers.PMC_PEX;

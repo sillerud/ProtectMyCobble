@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-import me.kevin.protectmycobble.Permission;
+import me.kevin.protectmycobble.API.Permission;
 
 public class PMC_PEX implements Permission.PermissionHandler{
 	PermissionsEx pex;

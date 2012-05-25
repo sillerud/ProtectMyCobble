@@ -3,8 +3,8 @@ package me.kevin.protectmycobble.permissionhandlers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import me.kevin.protectmycobble.Permission;
-import me.kevin.protectmycobble.Permission.Type;
+import me.kevin.protectmycobble.API.Permission;
+import me.kevin.protectmycobble.API.Permission.Type;
 
 public class PMCPermissionsBukkit implements Permission.PermissionHandler{
 

@@ -1,4 +1,4 @@
-package me.kevin.protectmycobble;
+package me.kevin.protectmycobble.API;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

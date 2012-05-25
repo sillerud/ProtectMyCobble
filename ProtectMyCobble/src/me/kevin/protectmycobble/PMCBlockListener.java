@@ -1,5 +1,7 @@
 package me.kevin.protectmycobble;
 
+import me.kevin.protectmycobble.API.Permission;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;

@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import me.kevin.protectmycobble.API.SQLHandler;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -110,7 +112,7 @@ public class PMCMySQL implements SQLHandler, Listener{
 	}
 	public void addWorldProtect(String worldname) {
 		try {
-			query("CREATE TABLE IF NOT EXISTS " + getTableName(worldname)  + "(X INT, Y INT, Z INT, Player VARCHAR(100), INDEX(X, Y, Z));");
+			query("CREATE TABLE IF NOT EXISTS " + getTableName(worldname)  + "(X INT, Y INT, Z INT, Player VARCHAR(100), UNIQUE INDEX(X, Y, Z));");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
