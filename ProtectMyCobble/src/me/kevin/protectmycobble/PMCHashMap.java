@@ -14,6 +14,7 @@ import java.util.HashMap;
 import me.kevin.protectmycobble.API.SQLHandler;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -64,16 +65,21 @@ public class PMCHashMap implements SQLHandler, Runnable{
 	@Override
 	public void connect() {
 		file = new File(new File(plugin.getDataFolder(), "protection"), "PMC.PROTECTION");
-		HashMap<Block, String> map = readFile();
-		if(map != null){
-			save = map;
+		file.getParentFile().mkdirs();
+		if(file.exists()){
+			HashMap<Block, String> map = readFile();
+			if(map != null){
+				save = map;
+			}
 		}
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this, 60l, 12000l);
 	}
 
 	@Override
 	public void disconnect() {
-		new Thread(this).start();
+		Bukkit.getLogger().info(ChatColor.RED + "Saving block protection, please wait");
+		write();
+		Bukkit.getLogger().info(ChatColor.RED + "Done!");
 	}
 
 	@Override

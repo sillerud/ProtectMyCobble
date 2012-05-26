@@ -5,12 +5,15 @@ import me.kevin.protectmycobble.API.Permission;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
+import org.bukkit.block.ContainerBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.InventoryHolder;
 
 public class PMCBlockListener implements Listener{
 	ProtectMyCobble main;
@@ -58,20 +61,25 @@ public class PMCBlockListener implements Listener{
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
-			if(main.showOwner){
-				if(!main.permissionHandler.hasPermission(Permission.Type.OpenContainer, event.getPlayer())){
-					String owner = main.getSQL().getOwner(event.getClickedBlock().getLocation());
-					if(owner != null){
-						if(!owner.equals(event.getPlayer().getName())){
-							event.setCancelled(true);
-							event.getPlayer().sendMessage(format(main.protectedMessage, owner));
+			if(event.getClickedBlock().getState() instanceof InventoryHolder){
+				if(main.permissionHandler == null){
+					throw new NullPointerException("PermissionHandler is null");
+				}
+				if(main.showOwner){
+					if(!main.permissionHandler.hasPermission(Permission.Type.OpenContainer, event.getPlayer())){
+						String owner = main.getSQL().getOwner(event.getClickedBlock().getLocation());
+						if(owner != null){
+							if(!owner.equals(event.getPlayer().getName())){
+								event.setCancelled(true);
+								event.getPlayer().sendMessage(format(main.protectedMessage, owner));
+							}
 						}
 					}
-				}
-			}else{
-				if(main.permissionHandler.hasPermission(Permission.Type.OpenContainer, event.getPlayer())){
-					if(!main.getSQL().canBreakBlock(event.getClickedBlock().getLocation(), event.getPlayer())){
-						event.setCancelled(true);
+				}else{
+					if(main.permissionHandler.hasPermission(Permission.Type.OpenContainer, event.getPlayer())){
+						if(!main.getSQL().canBreakBlock(event.getClickedBlock().getLocation(), event.getPlayer())){
+							event.setCancelled(true);
+						}
 					}
 				}
 			}
