@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import me.kevin.protectmycobble.API.SQLHandler;
+import me.kevin.protectmycobble.API.DatabaseAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 
-public class PMCMySQL implements SQLHandler, Listener{
+public class PMCMySQL implements DatabaseAPI, Listener{
 	private Connection con;
 	private String pass;
 	String user;

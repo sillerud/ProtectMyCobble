@@ -1,12 +1,10 @@
 package me.kevin.protectmycobble;
 
-import me.kevin.protectmycobble.API.Permission;
+import me.kevin.protectmycobble.API.PermissionAPI;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
-import org.bukkit.block.ContainerBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -26,9 +24,9 @@ public class PMCBlockListener implements Listener{
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){
 		if(!event.isCancelled() && !main.notProtected.contains(event.getBlock().getTypeId())){
-			if(!main.getPermissionHandler(main.permissionType).hasPermission(Permission.Type.Break, event.getPlayer())){
+			if(!main.getPermissionHandler(main.permissionType).hasPermission(PermissionAPI.Type.Break, event.getPlayer())){
 				if(main.showOwner){
-					String owner = main.getSQL().getOwner(event.getBlock().getLocation());
+					String owner = main.getDatabaseHandler().getOwner(event.getBlock().getLocation());
 					if(owner != null){
 						if(!owner.equals(event.getPlayer().getName())){
 							event.setCancelled(true);
@@ -36,7 +34,7 @@ public class PMCBlockListener implements Listener{
 						}
 					}
 				}else{
-					if(!main.getSQL().canBreakBlock(event.getBlock().getLocation(), event.getPlayer())){
+					if(!main.getDatabaseHandler().canBreakBlock(event.getBlock().getLocation(), event.getPlayer())){
 						event.setCancelled(true);
 					}
 				}
@@ -55,19 +53,19 @@ public class PMCBlockListener implements Listener{
 			}
 		}
 		if(!event.isCancelled()) {
-			main.getSQL().protectBlock(event.getBlock().getLocation(), event.getPlayer());
+			main.getDatabaseHandler().protectBlock(event.getBlock().getLocation(), event.getPlayer());
 		}
 	}
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
 			if(event.getClickedBlock().getState() instanceof InventoryHolder){
-				if(main.permissionHandler == null){
+				if(main.getCurrentPermissionHandler() == null){
 					throw new NullPointerException("PermissionHandler is null");
 				}
 				if(main.showOwner){
-					if(!main.permissionHandler.hasPermission(Permission.Type.OpenContainer, event.getPlayer())){
-						String owner = main.getSQL().getOwner(event.getClickedBlock().getLocation());
+					if(!main.getCurrentPermissionHandler().hasPermission(PermissionAPI.Type.OpenContainer, event.getPlayer())){
+						String owner = main.getDatabaseHandler().getOwner(event.getClickedBlock().getLocation());
 						if(owner != null){
 							if(!owner.equals(event.getPlayer().getName())){
 								event.setCancelled(true);
@@ -76,8 +74,8 @@ public class PMCBlockListener implements Listener{
 						}
 					}
 				}else{
-					if(main.permissionHandler.hasPermission(Permission.Type.OpenContainer, event.getPlayer())){
-						if(!main.getSQL().canBreakBlock(event.getClickedBlock().getLocation(), event.getPlayer())){
+					if(main.getCurrentPermissionHandler().hasPermission(PermissionAPI.Type.OpenContainer, event.getPlayer())){
+						if(!main.getDatabaseHandler().canBreakBlock(event.getClickedBlock().getLocation(), event.getPlayer())){
 							event.setCancelled(true);
 						}
 					}
@@ -87,6 +85,7 @@ public class PMCBlockListener implements Listener{
 	}
 
 	public static String format(String original){
+		if(original == null) return null;
 		String modded = original;
 		modded = modded.replaceAll("&0", ChatColor.BLACK.toString());
 		modded = modded.replaceAll("&1", ChatColor.DARK_BLUE.toString());
@@ -114,6 +113,7 @@ public class PMCBlockListener implements Listener{
 		return modded;
 	}
 	public static String format(String original, String owner){
+		if(original == null)return null;
 		String modded = format(original);
 		modded = modded.replaceAll("!PlayerName!", owner);
 		return modded;

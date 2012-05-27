@@ -5,15 +5,15 @@ import org.bukkit.entity.Player;
 
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-import me.kevin.protectmycobble.API.Permission;
+import me.kevin.protectmycobble.API.PermissionAPI;
 
-public class PMC_PEX implements Permission.PermissionHandler{
+public class PMC_PEX implements PermissionAPI.PermissionHandler{
 	PermissionsEx pex;
 	public boolean pexfound = false;
 	@Override
-	public boolean hasPermission(Permission.Type permission, Player player) {
+	public boolean hasPermission(PermissionAPI.Type permission, Player player) {
 		if(pexfound){
-			return pex.has(player, Permission.getNode(permission));
+			return pex.has(player, PermissionAPI.getNode(permission));
 		}else{
 			return player.isOp();
 		}

@@ -3,7 +3,7 @@ package me.kevin.protectmycobble.API;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public interface SQLHandler {
+public interface DatabaseAPI {
 	public void protectBlock(Location loc, Player player);
 	public void protectBlock(int x, int y, int z, String world, Player player);
 	public boolean canBreakBlock(Location loc, Player player);

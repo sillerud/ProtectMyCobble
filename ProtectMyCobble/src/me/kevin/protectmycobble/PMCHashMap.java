@@ -11,7 +11,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import me.kevin.protectmycobble.API.SQLHandler;
+import me.kevin.protectmycobble.API.DatabaseAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,7 +20,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class PMCHashMap implements SQLHandler, Runnable{
+public class PMCHashMap implements DatabaseAPI, Runnable{
 	File file;
 	Plugin plugin;
 	HashMap<Block, String> save = new HashMap<Block, String>();
@@ -41,9 +41,10 @@ public class PMCHashMap implements SQLHandler, Runnable{
 
 	@Override
 	public boolean canBreakBlock(Location loc, Player player) {
+		if(ignoreWorlds.contains(loc.getWorld()))return true;
 		String name = save.get(loc.getBlock());
 		if(name == null)return true;
-		return player.getName().equals(name);
+		return player.getName().equalsIgnoreCase(name);
 	}
 
 	@Override

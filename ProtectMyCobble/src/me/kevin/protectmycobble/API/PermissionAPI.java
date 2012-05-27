@@ -2,7 +2,7 @@ package me.kevin.protectmycobble.API;
 
 import org.bukkit.entity.Player;
 
-public class Permission{
+public class PermissionAPI{
 	public static String getNode(Type permission){
 		if(permission == Type.Break){
 			return "PMC.BreakAll";
