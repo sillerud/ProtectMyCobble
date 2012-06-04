@@ -29,16 +29,35 @@ public class PMCHashMap implements DatabaseAPI, Runnable{
 		//Trenger bare denne for saveloopen og basefolderen til pluginen :)
 		this.plugin = plugin;
 	}
+	/**
+	 * Beskytter blokken som er ved kordinatene som er gitt.
+	 * @param loc Blokken sine kordinater
+	 * @param player spilleren som plasserte blokken
+	 */
 	@Override
 	public void protectBlock(Location loc, Player player) {
 		save.put(loc.getBlock(), player.getName());
 	}
 
+	/**
+	 * Beskytter blokken somer ved kordinatene som er gitt
+	 * @param x x-kordinatet til blokken
+	 * @param y y-kordinatet til blokken
+	 * @param z z-kordinatet til blokken
+	 * @param world navnet til verden hvor blokken er plassert
+	 * @param player Spilleren som plasserte blokken.
+	 */
 	@Override
 	public void protectBlock(int x, int y, int z, String world, Player player) {
 		protectBlock(new Location(Bukkit.getWorld(world), x, y, z), player);
 	}
 
+	/**
+	 * Sjekker om spilleren kan ødelegge blokken ved kordinatene som er gitt.
+	 * @return om spilleren kan ødelegge blokken.
+	 * @param loc Stedet til blokken som er plassert.
+	 * @param player Spilleren som skal sjekkes.
+	 */
 	@Override
 	public boolean canBreakBlock(Location loc, Player player) {
 		if(ignoreWorlds.contains(loc.getWorld()))return true;
@@ -47,22 +66,45 @@ public class PMCHashMap implements DatabaseAPI, Runnable{
 		return player.getName().equalsIgnoreCase(name);
 	}
 
+	/**
+	 * Sjekker om spilleren kan ødelegge blokken ved kordinatene som er gitt.
+	 * @return om spilleren kan ødelegge blokken.
+	 * @param x x-kordinatet til blokken
+	 * @param y y-kordinatet til blokken
+	 * @param z z-kordinatet til blokken
+	 */
 	@Override
 	public boolean canBreakBlock(int x, int y, int z, String world,
 			Player player) {
 		return canBreakBlock(new Location(Bukkit.getWorld(world), x, y, z), player);
 	}
 
+	/**
+	 * Gir deg navnet til spilleren som plasserte blokken ved de kordinatene
+	 * @return Navnet til spilleren som plasserte blokken til kordinatene.
+	 * @param loc kordinatene til blokken.
+	 */
 	@Override
 	public String getOwner(Location loc) {
 		return save.get(loc.getBlock());
 	}
 
+	/**
+	 * Gir deg navnet til spilleren som plasserte blokken ved de kordinatene
+	 * @return Navnet til spilleren som plasserte blokken til kordinatene
+	 * @param x x-kordinatet til blokken
+	 * @param y y-kordinatet til blokken
+	 * @param z z-kordinatet til blokken
+	 * @param world verden til blokken
+	 */
 	@Override
 	public String getOwner(int x, int y, int z, String world) {
 		return getOwner(new Location(Bukkit.getWorld(world), x, y, z));
 	}
 
+	/**
+	 * initialiserer beskyttelsen
+	 */
 	@Override
 	public void connect() {
 		file = new File(new File(plugin.getDataFolder(), "protection"), "PMC.PROTECTION");
@@ -76,6 +118,9 @@ public class PMCHashMap implements DatabaseAPI, Runnable{
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, this, 60l, 12000l);
 	}
 
+	/**
+	 * stopper beskyttelsen.
+	 */
 	@Override
 	public void disconnect() {
 		Bukkit.getLogger().info(ChatColor.RED + "Saving block protection, please wait");
@@ -83,16 +128,27 @@ public class PMCHashMap implements DatabaseAPI, Runnable{
 		Bukkit.getLogger().info(ChatColor.RED + "Done!");
 	}
 
+	/**
+	 * gjør at en verden ikke er beskyttet.
+	 * @param worldname navnet til verden.
+	 */
 	@Override
 	public void ignoreWorld(String worldname) {
 		ignoreWorlds.add(worldname);
 	}
 
+	/**
+	 * gjør at en verden som ikke er beskyttet er beskyttet igjen
+	 * @param worldname navnet til verden.
+	 */
 	@Override
 	public void removeIngoreWorld(String worldname) {
 		ignoreWorlds.remove(worldname);
 	}
-	boolean firstloop = true;
+	private boolean firstloop = true;
+	/**
+	 * Save loopen.
+	 */
 	@Override
 	public void run() {
 		if(firstloop){
@@ -105,6 +161,10 @@ public class PMCHashMap implements DatabaseAPI, Runnable{
 			Bukkit.getLogger().severe("Could not save block file!");
 		}
 	}
+	/**
+	 * Leser blokk database filen.
+	 * @return ett hashmap med alle blokker som er lagret
+	 */
 	private HashMap<Block, String> readFile(){
 		HashMap<Block, String> map = new HashMap<Block, String>();
 		try{
@@ -133,6 +193,10 @@ public class PMCHashMap implements DatabaseAPI, Runnable{
 		}
 		return map;
 	}
+	/**
+	 * Skriver hashmappet med blokker til databasen
+	 * @return om det var velykket.
+	 */
 	private boolean write(){
 		try {
 			PrintStream stream = new PrintStream(new FileOutputStream(file));
